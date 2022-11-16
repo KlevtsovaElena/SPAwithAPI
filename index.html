@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsingAPI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="nameShop">SHOP</div>
+            <div class="menu">
+                <a id="deliveryA" href="">
+                    Доставка
+                    <div id="delivery"><p>Бесплатная доставка по Москве.</p></div>
+                </a>
+                <a id="payA" href="">
+                    Оплата
+                    <div id="pay"><p>Платите, когда хотите.</p></div>
+                </a>
+                <a href="tel: +79060685310" target="_blank">☏ +7(000)000-00-00</a>
+            </div>
+            <div class="cartImg">
+                <img src="img/cartImg.png" onclick="showCart()">
+                <button id="countCart">0</button>
+            </div>
+        </div>
+    </header>
+
+    <div id="cardsAll">
+        <div id="containerCards"></div>  
+    </div>
+
+    <footer>
+        <div class="footer">
+            <div class="footerMenu">
+                <a href="tel: +79060685310" target="_blank">☏ +7(000)000-00-00</a>
+                <a href="mailto: evchemez@mail.ru" target="_blank">✉ shop@shop.ru</a>
+                <div class="contact">
+                    <a href="#"><img src="img/vk.png" class="contactsSize"></a>
+                    <a href="#"><img src="img/telegramm.png" class="contactsSize"></a>
+                    <a href="#"><img src="img/insta.jpg" class="contactsSize"></a>
+                </div>
+            </div>
+            <div id="info"><i>Учебный проект с использованием API: </i><a href="https://fakestoreapi.com/products/" target="_blank"><i>https://fakestoreapi.com/products/</i></a></div>
+        </div>
+    </footer> 
+    
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+@font-face {
+    font-family: 'Poppins'; 
+    src: url('../fonts/Poppins-Medium.ttf'); 
+}   
+body, p{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+} 
+a{
+    color:white;
+    text-decoration: none;
+}
+button{cursor: pointer;}
+h3{margin: 0;}
+header, footer{
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    width: 100%; 
+    height: 100px;
+    font-size: 16px;
+    background: rgb(1, 5, 11);
+    color: white;
+}
+.header, .footer{
+    width: 100%;
+    padding: 20px 40px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+/*header*/    
+.nameShop{font-size: 18px;}
+.menu{
+    display: flex;
+    column-gap: 40px;
+}
+#deliveryA, #payA{position: relative;}
+#delivery, #pay{
+    z-index: 3;
+    position: absolute;
+    width: 100px;
+    top:100%;
+    left: -5px;
+    background-color:gainsboro;
+    color: black;
+    font-size: 12px;
+    padding: 2px;
+    border-radius: 5px;
+    display: none;
+}
+.cartImg{
+    width: 40px;
+    height: 40px;
+    position: relative;
+}
+.cartImg img{
+    width: 40px;
+    cursor: pointer;
+}
+#countCart{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #FF0033;
+    color: white;
+    border: none;
+    position: absolute;
+    padding: 0;
+    font-size: 12px;
+    top: -7px;
+    left: -9px;
+}
+
+/*footer*/
+.footer{flex-direction: column;}
+.footerMenu{
+    width: 100%;
+    display: flex;
+    column-gap: 40px;
+    justify-content: space-around;
+    align-items: center;
+}
+.contactsSize{
+    transition: all 0.4s;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 3px solid white;
+    background-color: white;
+    overflow: hidden;
+    background-position: center center;
+    opacity: 0.6;
+}
+#info{font-size: 12px;}
+
+/*основная часть*/
+#cardsAll{
+    display: flex;
+    justify-content: center;
+    width:100%;
+    background-image: url('../img/fon.png');
+}
+#containerCards{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80%;
+    margin: 20px;
+}
+.card{
+    width: 200px;
+    height: 330px;
+    padding: 10px 12px 10px;
+    background-color: white;
+    margin: 7px;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.card img{width: 120px;}
+.cardImg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 100%;
+}   
+.description{
+    position: relative;
+    padding: 5px 0 5px;
+}
+#name{
+    padding: 10px 0 0;
+    color: gray;
+    height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#nameVisible{
+    display: none;
+    position: absolute;
+    top: 24px;
+    padding: 10px 0 10px;
+    color: gray;
+    height: auto;
+    background-color: white;
+}
+.rating{
+    display: flex;
+    align-items: baseline;
+    column-gap: 10px;
+    padding: 0 0 10px;
+}
+.btn{
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+}    
+.cartAdd{
+    background: #339966;
+    transition: all 0.3s;
+}
+.cartDelete{
+    background: #FF0033;
+    display: none;
+    transition: all 0.3s;
+}
+.cartBtn{
+    width: 100px;
+    height: 33px;
+    border-radius: 12px;
+    color: white;
+    border: none;
+}
+.heart, .heartRed{
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    background: none;
+    border: none;
+}
+.heart{font-size: 24px;}
+.heartRed{
+    font-size: 20px;
+    color: red;
+    display: none;
+}
+
+/*hover*/
+#deliveryA:hover > div{display: block;}
+#payA:hover > div{display: block;}
+
+.contactsSize:hover{opacity: 1;}
+
+.description:hover #nameVisible{display: block;}
+.card:hover{box-shadow: 0 0 15px 0 rgba(0, 0, 255, 0.35);}
+.cartAdd:hover{
+    box-shadow: 0 0 15px 0 rgb(0, 255, 0, 35%);
+    transform: translateY(-2px);
+}
+.cartDelete:hover{
+    box-shadow: 0 0 15px 0 rgb(255, 0, 0, 35%);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 850px){
+    body, footer, header{font-size: 12px;}
+    #containerCards{width:100%;}
+    .card{
+        width: 130px;
+        height: 270px;
+    }
+    .card img{width: 90px;}
+    .cardImg{height: 150px;}
+    .cartBtn{
+        width: 80px;
+        height: 25px;
+    }
+    .heartRed, .heart{font-size: 18px;  }
+}
+@media (max-width: 650px){
+    .footerMenu, .header, .menu{
+        align-items: center;
+        flex-direction: column;
+    }
+    .contact{padding-top: 5px;}
+    .cartImg{padding-top: 10px;}
+    #countCart{top: 2px;}
+    #info{text-align: center;}
+    footer, header{height: auto;}
+
+}
