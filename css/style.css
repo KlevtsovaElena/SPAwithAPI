@@ -131,6 +131,9 @@ header, footer{
     border-radius: 10px;
     transition: all 0.3s;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 .card img{width: 120px;}
 .cardID img{    

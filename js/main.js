@@ -1,19 +1,19 @@
 //переменная подсчёта товаров в Корзине
 let countCart=0;
-//создаём ассоциативный массив для Доставки/Оплаты
-let arrayDeliveryPay = {"office" : "г. Москва, ул. Магазинная д. 1, вход со двора",  
-                        "service" : "SHOP-Delivery",
-                        "price" : "450 руб",
-                        "payment" : ["Картой на сайте", "Картой при получении", "Наличными"]
+//создаём ассоциативный массив для страниц Доставки/Оплаты и Контакты
+let addPage = {"arrayDeliveryPay" : {"office" : "г. Москва, ул. Магазинная д. 1, вход со двора",  
+                                    "service" : "SHOP-Delivery",
+                                    "price" : "450 руб",
+                                    "payment" : ["Картой на сайте", "Картой при получении", "Наличными"]
+                                },
+               "arrayContacts" : { "tel" : "+70000000000",
+                                "mail" : "shop@shop.ru",
+                                "imageVK": "img/vk.png",
+                                "imageTelega": "img/telegramm.png",
+                                "imageInsta": "img/insta.jpg"
+                                }
 };
 
-//создаём ассоциативный массив для Контакты
-let arrayContacts = {   "tel" : "+70000000000",
-                        "mail" : "shop@shop.ru",
-                        "imageVK": "img/vk.png",
-                        "imageTelega": "img/telegramm.png",
-                        "imageInsta": "img/insta.jpg"
-};
 //создаём пустой массив для записи товаров в корзину. Точнее id товаров
 let arrayCart= new Array();
 
@@ -58,6 +58,10 @@ function sendRequestGET(url){
                                                   .replace('{price}', data[i]['price'])
                                                   .replace('{rate}', data[i]['rating']['rate']);
      }
+     for (let i = 0; i < arrayCart.length; i++){
+        document.getElementById('cart'+ arrayCart[i]).classList.add('d-none');
+        document.getElementById('cart'+ arrayCart[i] +'Delete').classList.add('d-iblock');
+     }
  }
 
  //функция отрисовки карточки
@@ -74,32 +78,52 @@ function sendRequestGET(url){
                                            .replace('{rate}', data['rating']['rate'])
                                            .replace('{count}', data['rating']['count'])
                                            .replace('{description}', data['description']);
+   
+    let idString = String(id);
+    if (arrayCart.indexOf(idString) >= 0){
+            document.getElementById('cart'+ id).classList.add('d-none');
+            document.getElementById('cart'+ id +'Delete').classList.add('d-iblock');  
+    }                                  
   }
 
 //функция отрисовки странички Доставка Оплата
 function showDeliveryPay(){
     clearPage();
     let payment="";
-    for(let i = 0; i < arrayDeliveryPay['payment'].length; i++){
-        payment += (i+1) + ". " + arrayDeliveryPay['payment'][i] + "<br>";
+    for(let i = 0; i < addPage['arrayDeliveryPay']['payment'].length; i++){
+        payment += (i+1) + ". " + addPage['arrayDeliveryPay']['payment'][i] + "<br>";
     }
-    containerPage.innerHTML += templateDeliveryPay.replace('{office}', arrayDeliveryPay['office'])
-                                                    .replace('{service}', arrayDeliveryPay['service'])
-                                                    .replace('{price}', arrayDeliveryPay['price'])
+    containerPage.innerHTML += templateDeliveryPay.replace('{office}', addPage['arrayDeliveryPay']['office'])
+                                                    .replace('{service}', addPage['arrayDeliveryPay']['service'])
+                                                    .replace('{price}', addPage['arrayDeliveryPay']['price'])
                                                     .replace('{payment}', payment);
 }
 
 //функция отрисовки странички Контакты
 function showContacts(){
     clearPage();
-    containerPage.innerHTML += templateContacts .replace(/{tel}/g, arrayContacts['tel'])
-                                                .replace(/{mail}/g, arrayContacts['mail'])
-                                                .replace('{imageVK}', arrayContacts['imageVK'])
-                                                .replace('{imageTelega}', arrayContacts['imageTelega'])
-                                                .replace('{imageInsta}', arrayContacts['imageInsta'])
-                                                .replace('{office}', arrayDeliveryPay['office']);
+    containerPage.innerHTML += templateContacts .replace(/{tel}/g, addPage['arrayContacts']['tel'])
+                                                .replace(/{mail}/g, addPage['arrayContacts']['mail'])
+                                                .replace('{imageVK}', addPage['arrayContacts']['imageVK'])
+                                                .replace('{imageTelega}', addPage['arrayContacts']['imageTelega'])
+                                                .replace('{imageInsta}', addPage['arrayContacts']['imageInsta'])
+                                                .replace('{office}', addPage['arrayDeliveryPay']['office']);
 
 }
+/*Страничка Корзины - выводятся наименования товаров и считается общая стоимость*/
+function showCart(){
+    clearPage();
+    let json = sendRequestGET('https://fakestoreapi.com/products/');
+    let data=JSON.parse(json);
+    let cart = "";
+    let price = 0;
+    for(let i=0; i < arrayCart.length; i++){
+        cart += (i+1) + ". " + data[arrayCart[i]-1]['title'] + "----------" + data[arrayCart[i]-1]['price'] + " руб.<br>";
+        price += data[arrayCart[i]-1]['price'];
+    }
+    containerPage.innerHTML += templateCart .replace('{cart}', cart)
+                                            .replace('{price}', price);
+ }
 /*при нажатии появляется-исчезает красное сердечко, типо добавили-убрали в избранное*/
  function hiddenHeart(){
      let idElement = event.target.id+"Red";
@@ -132,17 +156,4 @@ function showContacts(){
      countCart--;
      document.getElementById('countCart').innerHTML = countCart;
  }
-/*Страничка Корзины - выводятся наименования товаров и считается общая стоимость*/
- function showCart(){
-    clearPage();
-    let json = sendRequestGET('https://fakestoreapi.com/products/');
-    let data=JSON.parse(json);
-    let cart = "";
-    let price = 0;
-    for(let i=0; i < arrayCart.length; i++){
-        cart += (i+1) + ". " + data[arrayCart[i]]['title'] + "----------" + data[arrayCart[i]]['price'] + "<br>";
-        price += data[arrayCart[i]]['price'];
-    }
-    containerPage.innerHTML += templateCart .replace('{cart}', cart)
-                                            .replace('{price}', price);
- }
+
