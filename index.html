@@ -3,50 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UsingAPI</title>
+    <title>SPAwithAPI</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <div class="header">
-            <div class="nameShop">SHOP</div>
-            <div class="menu">
-                <a id="deliveryA" href="">
-                    Доставка
-                    <div id="delivery"><p>Бесплатная доставка по Москве.</p></div>
-                </a>
-                <a id="payA" href="">
-                    Оплата
-                    <div id="pay"><p>Платите, когда хотите.</p></div>
-                </a>
-                <a href="tel: +79060685310" target="_blank">☏ +7(000)000-00-00</a>
-            </div>
-            <div class="cartImg">
-                <img src="img/cartImg.png" onclick="showCart()">
-                <button id="countCart">0</button>
-            </div>
-        </div>
-    </header>
-
-    <div id="cardsAll">
-        <div id="containerCards"></div>  
-    </div>
-
-    <footer>
-        <div class="footer">
-            <div class="footerMenu">
-                <a href="tel: +79060685310" target="_blank">☏ +7(000)000-00-00</a>
-                <a href="mailto: evchemez@mail.ru" target="_blank">✉ shop@shop.ru</a>
-                <div class="contact">
-                    <a href="#"><img src="img/vk.png" class="contactsSize"></a>
-                    <a href="#"><img src="img/telegramm.png" class="contactsSize"></a>
-                    <a href="#"><img src="img/insta.jpg" class="contactsSize"></a>
+    <div id="container">
+        <header>
+            <div class="header">
+                <div class="nameShop">SHOP</div>
+                <div class="menu">
+                    <a href="#" onclick="renderCatalog()">
+                        Каталог
+                    </a>
+                    <a href="#" onclick="showDeliveryPay()">
+                        Доставка и Оплата
+                    </a>
+                    <a href="#" onclick="showContacts()">
+                        Контакты
+                    </a>
                 </div>
-            </div>
-            <div id="info"><i>Учебный проект с использованием API: </i><a href="https://fakestoreapi.com/products/" target="_blank"><i>https://fakestoreapi.com/products/</i></a></div>
+                <div class="cartImg">
+                    <img src="img/cartImg.png" onclick="showCart()">
+                    <button id="countCart">0</button>
+                </div>
+        </header>
+
+        <div id="backgroundPage">
+            <div id="containerPage"></div>
         </div>
-    </footer> 
+
+        <footer>
+            <div class="footer">
+                <div class="footerMenu">
+                    <a href="tel: +79060685310" target="_blank">☏ +7(000)000-00-00</a>
+                    <a href="mailto: evchemez@mail.ru" target="_blank">✉ shop@shop.ru</a>
+                    <div class="contact">
+                        <a href="#"><img src="img/vk.png" class="contactsSize"></a>
+                        <a href="#"><img src="img/telegramm.png" class="contactsSize"></a>
+                        <a href="#"><img src="img/insta.jpg" class="contactsSize"></a>
+                    </div>
+                </div>
+                <div id="info"><i>Учебный проект с использованием API: </i><a href="https://fakestoreapi.com/products/" target="_blank"><i>https://fakestoreapi.com/products/</i></a></div>
+            </div>
+        </footer> 
+
+    </div>
+<!--создаём шаблоны для страничек-->
+    <!--для каталога товаров-->
+    <template id="tmpl-catalog">
+        <div id="card{id}" class="card" >
+            <div class="cardImg" onclick="renderCard({id})">
+                <img src="{image}">
+            </div>
+            <div class="description">
+                <h3>{price} &#8381</h3>
+                <div id="name">{title}</div>
+            </div>
+            <div>
+                <h3>&#10026 {rate}</h3>
+            </div>
+            <div class="btn">
+                <button id="cart{id}" class="cartBtn cartAdd" onclick="hiddenCartAdd()">В корзину</button>
+                <button id="cart{id}Delete" class="cartBtn cartDelete d-none" onclick="hiddenCartDelete()">Удалить</button>
+                <button id="heart{id}" class="heart" onclick="hiddenHeart()">&#9825</button>
+                <button id="heart{id}Red" class="heartRed  d-none" onclick="hiddenHeartRed()">&#10084</button>
+            </div>
+        </div>       
+    </template>
+
+    <!--для одного товара подробнее-->
+    <template id="tmpl-card">
+        <div id="card{id}" class="cardID">
+            <div class="cardImgID">
+                <img src="{image}">
+            </div>
+            <div class="description">
+                <div class="title">{title}</div>
+            </div>
+        </div>  
+        <div class="cardID">
+            <div class="rating">
+                <div>
+                    <h3>&#10026 {rate}</h3>
+                </div>
+                <div class="description">Купили {count} раз</div>
+            </div>
+            <div class="description">
+                <h3>Описание:</h3>
+                <div class="description">{description}</div>
+            </div>
+            <div><h3>{price} &#8381</h3></div>
+            <div class="btn">
+                <button id="cart{id}" class="cartBtn cartAdd" onclick="hiddenCartAdd()">В корзину</button>
+                <button id="cart{id}Delete" class="cartBtn cartDelete  d-none" onclick="hiddenCartDelete()">Удалить</button>
+                <button id="heart{id}" class="heart" onclick="hiddenHeart()">&#9825</button>
+                <button id="heart{id}Red" class="heartRed  d-none" onclick="hiddenHeartRed()">&#10084</button>
+            </div>
+        </div>          
+    </template>
     
+    <!--для странички Доставки и Оплаты-->
+    <template id="tmpl-deliveryPay">
+        <div id="deliveryPay">
+        <h3>ДОСТАВКА<br></h3>
+        <p>Вы можете забрать товар в пунктe самовывоза:<br>
+           <div class="office">{office}</div>
+           Или воспользоваться услугами нашей службы доставки: {service}.<br>
+           Доставка в пределах МКАД - бесплатная.<br>
+           Доставка по МО за МКАД - {price}.<br>
+           SHOP даёт возможность примерить одежду, обувь и другие товары перед оплатой заказа курьеру.<br>
+        </p><br>
+        <h3>ОПЛАТА<br></h3>
+        <p>Доступны следующие способы оплаты:<br>
+           <div class="payment">{payment}</div>
+           Пожалуйста, уточняйте наличие терминала для оплаты картой непосредственно перед доставкой при связи с курьером.
+        </p>
+    </div>
+    </template>
+
+    <!--для странички Контактов-->
+    <template id="tmpl-contacts">
+        <div class="contacts">
+            <h3>Наши контакты:</h3>
+            <p>Адрес: {office}</p>
+            <p>Режим работы:<br>
+                Ежедневно c 09:00 до 21:00 без перерывов и выходных </p>
+            <a class="font-black" href="tel: {tel}" target="_blank">☏ {tel}</a>
+            <a a class="font-black" href="mailto: {mail}" target="_blank">✉ {mail}</a>
+            <div class="contact">
+                <a href="#"><img src="{imageVK}" class="contactsSize border-black"></a>
+                <a href="#"><img src="{imageTelega}" class="contactsSize border-black"></a>
+                <a href="#"><img src="{imageInsta}" class="contactsSize border-black"></a>
+            </div>
+        </div>
+    </template>
+
+    <!--для странички Корзина-->
+    <template id="tmpl-cart">
+        
+        <div id="cartList">
+            <h3>Товары в Вашей корзине:<br></h3>
+            <div>{cart}<br></div>
+            <h3>Итого------{price} руб.</h3>
+        </div>
+    </template>
+
 <script src="js/main.js"></script>
+
 </body>
 </html>

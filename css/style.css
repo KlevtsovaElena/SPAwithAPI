@@ -1,7 +1,13 @@
 @font-face {
     font-family: 'Poppins'; 
     src: url('../fonts/Poppins-Medium.ttf'); 
-}   
+} 
+
+#container{
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+} 
 body, p{
     margin: 0;
     padding: 0;
@@ -30,25 +36,16 @@ header, footer{
     justify-content: space-around;
     align-items: center;
 }
+.font-black{color: black;}
+.border-black{border: black;}
+.bg-color-white{background-color: white;}
+.d-none{display: none;}
+.d-iblock{display: inline-block;}
 /*header*/    
 .nameShop{font-size: 18px;}
 .menu{
     display: flex;
     column-gap: 40px;
-}
-#deliveryA, #payA{position: relative;}
-#delivery, #pay{
-    z-index: 3;
-    position: absolute;
-    width: 100px;
-    top:100%;
-    left: -5px;
-    background-color:gainsboro;
-    color: black;
-    font-size: 12px;
-    padding: 2px;
-    border-radius: 5px;
-    display: none;
 }
 .cartImg{
     width: 40px;
@@ -82,6 +79,10 @@ header, footer{
     justify-content: space-around;
     align-items: center;
 }
+.contact{
+    display: flex;
+    column-gap: 5px;
+}
 .contactsSize{
     transition: all 0.4s;
     width: 28px;
@@ -96,18 +97,21 @@ header, footer{
 #info{font-size: 12px;}
 
 /*основная часть*/
-#cardsAll{
+#backgroundPage{
     display: flex;
     justify-content: center;
+    align-items: center;
     width:100%;
+    flex: 1;
     background-image: url('../img/fon.png');
 }
-#containerCards{
+#containerPage{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
     width: 80%;
     margin: 20px;
+    border-radius: 10px;
 }
 .card{
     width: 200px;
@@ -118,17 +122,38 @@ header, footer{
     border-radius: 10px;
     transition: all 0.3s;
 }
+.cardID{
+    width: 400px;
+    height: 450px;
+    padding: 10px 12px 10px;
+    background-color: white;
+    margin: 7px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    text-align: center;
+}
 .card img{width: 120px;}
+.cardID img{    
+    max-height: 70%;
+    max-width: 100%;
+}
 .cardImg{
     display: flex;
     align-items: center;
     justify-content: center;
     height: 200px;
     width: 100%;
-}   
+}
+.cardImgID{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 350px;
+}     
 .description{
     position: relative;
     padding: 5px 0 5px;
+    text-align: center;
 }
 #name{
     padding: 10px 0 0;
@@ -147,9 +172,17 @@ header, footer{
     height: auto;
     background-color: white;
 }
+.title{
+    padding: 10px 0 10px;
+    text-align: center;
+    color: gray;
+    height: auto;
+    background-color: white;
+}
 .rating{
     display: flex;
     align-items: baseline;
+    justify-content: space-around;
     column-gap: 10px;
     padding: 0 0 10px;
 }
@@ -164,7 +197,6 @@ header, footer{
 }
 .cartDelete{
     background: #FF0033;
-    display: none;
     transition: all 0.3s;
 }
 .cartBtn{
@@ -185,17 +217,19 @@ header, footer{
 .heartRed{
     font-size: 20px;
     color: red;
-    display: none;
 }
-
+.contacts a{
+    display: block;
+    margin: 10px;
+}
+.border-black{border: 3px solid black;}
+.ta-center{text-align: center;}
 /*hover*/
-#deliveryA:hover > div{display: block;}
-#payA:hover > div{display: block;}
 
 .contactsSize:hover{opacity: 1;}
 
 .description:hover #nameVisible{display: block;}
-.card:hover{box-shadow: 0 0 15px 0 rgba(0, 0, 255, 0.35);}
+.card:hover, .cardID:hover{box-shadow: 0 0 15px 0 rgba(0, 0, 255, 0.35);}
 .cartAdd:hover{
     box-shadow: 0 0 15px 0 rgb(0, 255, 0, 35%);
     transform: translateY(-2px);
