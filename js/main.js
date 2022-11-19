@@ -15,8 +15,8 @@ let addPage = {"arrayDeliveryPay" : {"office" : "г. Москва, ул. Маг�
 };
 
 //создаём пустой массив для записи товаров в корзину И избранное. Точнее id товаров
-let arrayCart= new Array();
-let arrayHeart= new Array();
+let arrayCart = new Array();
+let arrayHeart = new Array();
 
 //переменные для записи элементов HTML
 let containerPage = document.getElementById('containerPage');
@@ -65,6 +65,11 @@ function sendRequestGET(url){
         document.getElementById('cart'+ arrayCart[i]).classList.add('d-none');
         document.getElementById('cart'+ arrayCart[i] +'Delete').classList.add('d-iblock');
      }
+    /*то же самое с кнопкой Избранное*/
+    for (let i = 0; i < arrayHeart.length; i++){
+        document.getElementById('heart'+ arrayHeart[i]).classList.add('d-none');
+        document.getElementById('heart'+ arrayHeart[i] +'Red').classList.add('d-iblock');
+     }
  }
 
  //функция отрисовки карточки
@@ -90,7 +95,12 @@ function sendRequestGET(url){
     if (arrayCart.indexOf(String(id)) >= 0){
             document.getElementById('cart'+ id).classList.add('d-none');
             document.getElementById('cart'+ id +'Delete').classList.add('d-iblock');
-    }                                  
+    }  
+    /*то же самое с кнопкой Избранное*/
+    if (arrayHeart.indexOf(String(id)) >= 0){
+        document.getElementById('heart'+ id).classList.add('d-none');
+        document.getElementById('heart'+ id +'Red').classList.add('d-iblock');
+     }                                
   }
 
 //функция отрисовки странички Доставка Оплата
@@ -121,6 +131,7 @@ function showContacts(){
 }
 /*Страничка Корзины - выводятся наименования товаров и считается общая стоимость*/
 function showCart(){
+    alert(arrayHeart);
     clearPage();
     let json = sendRequestGET('https://fakestoreapi.com/products/');
     let data=JSON.parse(json);
@@ -138,13 +149,17 @@ function showCart(){
 /*при нажатии появляется-исчезает красное сердечко, типо добавили-убрали в избранное*/
  function hiddenHeart(){
      let idElement = event.target.id+"Red";
+     let id = event.target.id.replace('heart', '');
      event.target.style.display="none";
      document.getElementById(idElement).style.display="inline-block";
+     arrayHeart.push(id); 
  }
  function hiddenHeartRed(){
      let idElement = event.target.id.replace("Red", "");
+     let id=idElement.replace('heart', '');
      event.target.style.display="none";
      document.getElementById(idElement).style.display="inline-block";
+     arrayHeart.splice(arrayHeart.indexOf(id), 1);
  }
 /*  при нажатии меняется кнопка Корзины(добавить-удалить) и 
  идёт подсчёт товаров в Корзине (отображается в красном кружке)*/
@@ -161,10 +176,10 @@ function showCart(){
  function hiddenCartDelete(){
      let idElement = event.target.id.replace("Delete", "");
      let id=idElement.replace('cart', '');
-     arrayCart.splice(arrayCart.indexOf(id), 1);
      event.target.style.display="none";
      document.getElementById(idElement).style.display="inline-block";
      countCart--;
      document.getElementById('countCart').innerHTML = countCart;
+     arrayCart.splice(arrayCart.indexOf(id), 1);
  }
 
