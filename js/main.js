@@ -14,8 +14,9 @@ let addPage = {"arrayDeliveryPay" : {"office" : "г. Москва, ул. Маг�
                                 }
 };
 
-//создаём пустой массив для записи товаров в корзину. Точнее id товаров
+//создаём пустой массив для записи товаров в корзину И избранное. Точнее id товаров
 let arrayCart= new Array();
+let arrayHeart= new Array();
 
 //переменные для записи элементов HTML
 let containerPage = document.getElementById('containerPage');
@@ -58,6 +59,8 @@ function sendRequestGET(url){
                                                   .replace('{price}', data[i]['price'])
                                                   .replace('{rate}', data[i]['rating']['rate']);
      }
+    /*здесь проходимся по массиву товаров в Корзине. Если они есть в ней , то
+    то кнопку 'В корзину' этих элемннтов скрыть, а кнопку 'Удалить' - показать*/
      for (let i = 0; i < arrayCart.length; i++){
         document.getElementById('cart'+ arrayCart[i]).classList.add('d-none');
         document.getElementById('cart'+ arrayCart[i] +'Delete').classList.add('d-iblock');
@@ -71,6 +74,8 @@ function sendRequestGET(url){
     let json = sendRequestGET('https://fakestoreapi.com/products/' + id);
     //раскодируем данные
     let data=JSON.parse(json);
+
+    /*вот это /{id}/g нужно для того, чтобы заменить ВСЕ найденные значения {id}, а не первое */
     containerPage.innerHTML += templateCard.replace(/{id}/g, data['id'])
                                            .replace(/{title}/g, data['title'])
                                            .replace('{image}', data['image'])
@@ -78,21 +83,25 @@ function sendRequestGET(url){
                                            .replace('{rate}', data['rating']['rate'])
                                            .replace('{count}', data['rating']['count'])
                                            .replace('{description}', data['description']);
-   
-    let idString = String(id);
-    if (arrayCart.indexOf(idString) >= 0){
+   /*здесь проверяем, есть ли в массиве Корзины элемент со значением id, кторый передали в эту функцию
+    indexOf(String(id)) - если есть - вернётся >0 (индекс элеента в массиве.)
+    String(id) нужен для того, чтобы ЧИСЛО id  преобразовать в СТРОКУ (напр, 3 в '3').
+    ИТОГ: если есть элемент в корзине, то кнопку 'В корзину' скрыть, а кнопку 'Удалить' - показать*/
+    if (arrayCart.indexOf(String(id)) >= 0){
             document.getElementById('cart'+ id).classList.add('d-none');
-            document.getElementById('cart'+ id +'Delete').classList.add('d-iblock');  
+            document.getElementById('cart'+ id +'Delete').classList.add('d-iblock');
     }                                  
   }
 
 //функция отрисовки странички Доставка Оплата
 function showDeliveryPay(){
     clearPage();
+    //здесь соберём данные об оплате массива, чтобы вывести их все не через запятую, а с новой строки
     let payment="";
     for(let i = 0; i < addPage['arrayDeliveryPay']['payment'].length; i++){
         payment += (i+1) + ". " + addPage['arrayDeliveryPay']['payment'][i] + "<br>";
     }
+
     containerPage.innerHTML += templateDeliveryPay.replace('{office}', addPage['arrayDeliveryPay']['office'])
                                                     .replace('{service}', addPage['arrayDeliveryPay']['service'])
                                                     .replace('{price}', addPage['arrayDeliveryPay']['price'])
@@ -117,6 +126,8 @@ function showCart(){
     let data=JSON.parse(json);
     let cart = "";
     let price = 0;
+    /*пробегаем по массиву товаров в корзине. Записываем в переменную cart все его элементы с новой строки.
+     А в переменную price считаем общую стоимость товаров*/
     for(let i=0; i < arrayCart.length; i++){
         cart += (i+1) + ". " + data[arrayCart[i]-1]['title'] + "----------" + data[arrayCart[i]-1]['price'] + " руб.<br>";
         price += data[arrayCart[i]-1]['price'];
