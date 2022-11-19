@@ -131,7 +131,6 @@ function showContacts(){
 }
 /*Страничка Корзины - выводятся наименования товаров и считается общая стоимость*/
 function showCart(){
-    alert(arrayHeart);
     clearPage();
     let json = sendRequestGET('https://fakestoreapi.com/products/');
     let data=JSON.parse(json);
