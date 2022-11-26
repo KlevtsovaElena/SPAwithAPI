@@ -1,5 +1,4 @@
-//переменная подсчёта товаров в Корзине
-let countCart=0;
+
 //создаём ассоциативный массив для страниц Доставки/Оплаты и Контакты
 let addPage = {"arrayDeliveryPay" : {"office" : "г. Москва, ул. Магазинная д. 1, вход со двора",  
                                     "service" : "SHOP-Delivery",
@@ -14,9 +13,27 @@ let addPage = {"arrayDeliveryPay" : {"office" : "г. Москва, ул. Маг�
                                 }
 };
 
-//создаём пустой массив для записи товаров в корзину И избранное. Точнее id товаров
-let arrayCart = new Array();
-let arrayHeart = new Array();
+
+//создаём пустой массив для записи товаров в корзину И избранное, переменную для подсчёта товаров в корзине. Точнее id товаров
+let arrayCart = localStorage.getItem('cart');
+let arrayHeart = localStorage.getItem('heart');
+let countCart = localStorage.getItem('countCart');
+
+//если нет сохранённого, то создаём новые переменные. 
+if (arrayCart == null){
+    arrayCart = new Array();
+}else {arrayCart = JSON.parse(arrayCart);}
+
+if (arrayHeart == null){
+    arrayHeart = new Array();
+}else {arrayHeart = JSON.parse(arrayHeart);}
+
+if (countCart == null){
+    countCart = 0;
+}
+
+//впишем в красный круг корзины количество товаров из переменной countCart
+document.getElementById('countCart').innerHTML = countCart;
 
 //переменные для записи элементов HTML
 let containerPage = document.getElementById('containerPage');
@@ -42,6 +59,14 @@ function sendRequestGET(url){
     return requestObj.responseText;
 }
 
+//для сохранения данных в localStorage
+function save(keyData, saveData){
+    //кодируем data в json и сохраняем в localStorage
+    let dataJson = JSON.stringify(saveData);
+
+    //сохраняем в localStorage
+    localStorage.setItem(keyData, dataJson);
+}
 
  //функция отрисовки каталога
  function renderCatalog(){
@@ -132,6 +157,7 @@ function showContacts(){
 /*Страничка Корзины - выводятся наименования товаров и считается общая стоимость*/
 function showCart(){
     clearPage();
+
     let json = sendRequestGET('https://fakestoreapi.com/products/');
     let data=JSON.parse(json);
     let cart = "";
@@ -152,6 +178,7 @@ function showCart(){
      event.target.style.display="none";
      document.getElementById(idElement).style.display="inline-block";
      arrayHeart.push(id); 
+     save('heart', arrayHeart);
  }
  function hiddenHeartRed(){
      let idElement = event.target.id.replace("Red", "");
@@ -159,6 +186,7 @@ function showCart(){
      event.target.style.display="none";
      document.getElementById(idElement).style.display="inline-block";
      arrayHeart.splice(arrayHeart.indexOf(id), 1);
+     save('heart', arrayHeart);
  }
 /*  при нажатии меняется кнопка Корзины(добавить-удалить) и 
  идёт подсчёт товаров в Корзине (отображается в красном кружке)*/
@@ -170,7 +198,9 @@ function showCart(){
      document.getElementById(idElement).style.display="inline-block";
      countCart++;
      document.getElementById('countCart').innerHTML = countCart;
-     arrayCart.push(id);   
+     arrayCart.push(id);
+    save('cart', arrayCart);
+    localStorage.setItem('countCart', countCart);
  }
  function hiddenCartDelete(){
      let idElement = event.target.id.replace("Delete", "");
@@ -180,5 +210,9 @@ function showCart(){
      countCart--;
      document.getElementById('countCart').innerHTML = countCart;
      arrayCart.splice(arrayCart.indexOf(id), 1);
+     save('cart', arrayCart);
+     localStorage.setItem('countCart', countCart);
  }
+
+
 
